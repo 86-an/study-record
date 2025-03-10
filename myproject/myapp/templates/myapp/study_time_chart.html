@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Time Chart</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/study_time_chart.css' %}">
+</head>
+<body>
+    <h1>Study Time Chart</h1>
+    <div>
+        <img src="data:image/png;base64,{{ graph }}">
+    </div>
+    <p><a href="{% url 'home' %}">Back to Home</a></p>
+</body>
+</html>
