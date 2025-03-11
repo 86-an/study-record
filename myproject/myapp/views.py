@@ -1,8 +1,11 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.conf import settings
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import io
+import os
 import urllib, base64
 from .models import Studyrecord
 
@@ -11,6 +14,9 @@ def home(request):
     return render(request, 'myapp/home.html')
 
 def study_time_chart(request):
+    return render(request, 'myapp/study_time_chart.html')
+    
+def chart_image(request):
     #データの取得と準備
     study_data = Studyrecord.objects.all()
     dates = [record.date for record in study_data]
@@ -24,15 +30,14 @@ def study_time_chart(request):
            title='Study Time Chart')
     ax.grid()
     
-    #グラフをバイナリーデータとして保存
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png')
-    buf.seek(0)
-    string = base64.b64encode(buf.read())
-    uri = urllib.parse.quote(string)
+    #グラフをファイルに保存
+    image_path = os.path.join(settings.MEDIA_ROOT, 'chart.png')
+    canvas = FigureCanvas(fig)
+    canvas.print_png(open(image_path, 'wb'))
     
-    #テンプレートにデータを渡す
-    context = {'data': uri}
-    return render(request, 'myapp/study_time_chart.html',
-                  context)
+    #画像ファイルをレスポンスとして返す
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    return response
+    
     
