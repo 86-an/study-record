@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    {% load static%}
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Time Chart</title>
     <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/study_time_chart.css' %}">
 </head>
 <body>
-    <h1>Study Time Chart</h1>
+    <h1>勉強時間の統計</h1>
     <div>
         <img src="{% url 'chart_image' %}" alt="Study Time Chart">
+        <ul>
+            {% if stats %}
+                {% for key, value in stats.items %}
+                    <li>{{ key }}: {{ value }}</li>
+                {% endfor %}
+            {% else %}
+                <li>データがありません。</li>
+            {% endif %}
+        </ul>
     </div>
     <p><a href="{% url 'home' %}">Back to Home</a></p>
 </body>
 </html>
+
+
