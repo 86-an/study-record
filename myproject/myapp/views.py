@@ -11,88 +11,67 @@ import urllib, base64
 import numpy as np
 import pandas as pd
 import logging
+import io  # 追加
 from .models import Studyrecord
 
 # Create your views here.
 def home(request):
     return render(request, 'myapp/home.html')
 
-def study_time_chart(request):
-    return render(request, 'myapp/study_time_chart.html')
-    
-def chart_image(request):
-    #データの取得と準備
-    study_data = Studyrecord.objects.all()
-    dates = [record.date for record in study_data]
-    study_times = [record.study_time for record in study_data]
-    
-    #グラフの描画
-    fig, ax = plt.subplots()
-    ax.plot(dates, study_times)
-    
-    ax.set(xlabel='Date', ylabel='Study Time (hours)',
-           title='Study Time Chart')
-    ax.grid()
-    
-    #x軸ラベルをカスタマイズ
-   # x軸ラベルの間隔を設定
-    import matplotlib.dates as mdates
-    ax.xaxis.set_major_locator(mdates.MonthLocator())
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    
-    #グラフをファイルに保存
-    image_path = os.path.join(settings.MEDIA_ROOT, 'chart.png')
-    canvas = FigureCanvas(fig)
-    canvas.print_png(open(image_path, 'wb'))
-    
-    #画像ファイルをレスポンスとして返す
-    response = HttpResponse(content_type='image/png')
-    canvas.print_png(response)
-    return response
-    
-logger = logging.getLogger(__name__)
-def study_time_stats(request):
+def study_time(request):
     # データの取得
-    study_data = Studyrecord.objects.all()
+    study_data = Studyrecord.objects.all().values('date', 'study_time')
     
-    #デバック用
-    logger.debug(f'Study data: {list(study_data)}')
-    print(f'Study data: {list(study_data)}')
-    if not study_data:
-        return render(request, 'myapp/study_time_chart.html', {'stats': None})
+    # pandasのDataFrameに変換
+    df = pd.DataFrame(list(study_data))
     
-    # リストからnumpy配列に変換
-    study_times = np.array([record['study_time'] for record in study_data])
-    dates = np.array([record['date'] for record in study_data])
-    
-    # 勉強時間の統計量計算（最大、最小、平均、中央値、合計、カウント）
-    max_study_time = float(np.max(study_times))
-    min_study_time = float(np.min(study_times))
-    avg_study_time = float(np.mean(study_times))
-    median_study_time = float(np.median(study_times))
-    total_study_time = float(np.sum(study_times))
-    count_study_time = int(len(study_times))
+    stats = None
+    if not df.empty:
+        # 勉強時間の統計量計算（最大、最小、平均、中央値、合計、カウント）
+        max_study_time = df['study_time'].max()
+        min_study_time = df['study_time'].min()
+        avg_study_time = df['study_time'].mean()
+        median_study_time = df['study_time'].median()
+        total_study_time = df['study_time'].sum()
+        count_study_time = df['study_time'].count()
 
-    # 今日の日付
-    today = timezone.now().date()
+        # 今日の日付
+        today = timezone.now().date()
 
-    # 今日の勉強時間の順位を計算
-    today_study_records = Studyrecord.objects.filter(date=today).order_by('-study_time')
-    if today_study_records.exists():
-        today_study_times = np.array(today_study_records.values_list('study_time', flat=True))
-        today_rank_times = study_times[dates == today]
-        rank = list(today_study_times).index(today_rank_times[0]) + 1 if len(today_rank_times) > 0 else 'No Data'
+        # 今日の勉強時間の順位を計算
+        today_study_records = df[df['date'] == today].sort_values(by='study_time', ascending=False)
+        rank = today_study_records.index[0] + 1 if not today_study_records.empty else 'No Data'  # 今日のデータが存在しない場合
+
+        stats = {
+            'max': max_study_time,
+            'min': min_study_time,
+            'mean': avg_study_time,
+            'median': median_study_time,
+            'sum': total_study_time,
+            'count': count_study_time,
+            'rank_today': rank
+        }
+
+    # グラフの作成
+    if not df.empty:
+        fig, ax = plt.subplots()
+        ax.plot(df['date'], df['study_time'], marker='o')
+        ax.set(xlabel='Date', ylabel='Study Time (hours)', title='Study Time Chart')
+        ax.grid()
+
+        # x軸ラベルをカスタマイズ
+        import matplotlib.dates as mdates
+        ax.xaxis.set_major_locator(mdates.MonthLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+
+        # グラフを画像として保存
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        image_base64 = base64.b64encode(image_png).decode('utf-8')
     else:
-        rank = 'No Data'  # 今日のデータが存在しない場合
+        image_base64 = None
 
-    stats = {
-        '最大': max_study_time,
-        '最小': min_study_time,
-        '平均': avg_study_time,
-        '中央値': median_study_time,
-        '合計': total_study_time,
-        'カウント': count_study_time,
-        '今日の順位': rank
-    }
-
-    return render(request, 'myapp/study_time_chart.html', {'stats': stats})
+    return render(request, 'myapp/study_time_chart.html', {'stats': stats, 'chart_image': image_base64})

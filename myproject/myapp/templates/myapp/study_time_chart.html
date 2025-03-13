@@ -8,9 +8,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/study_time_chart.css' %}">
 </head>
 <body>
-    <h1>勉強時間の統計</h1>
+    <h1>勉強時間の統計とグラフ</h1>
     <div>
-        <img src="{% url 'chart_image' %}" alt="Study Time Chart">
+        {% if chart_image %}
+            <img src="data:image/png;base64,{{ chart_image }}" alt="Study Time Chart">
+        {% else %}
+            <p>グラフデータがありません。</p>
+        {% endif %}
         <ul>
             {% if stats %}
                 {% for key, value in stats.items %}
