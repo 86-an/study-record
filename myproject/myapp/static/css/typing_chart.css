@@ -1,0 +1,76 @@
+/* ページ全体のスタイル */
+body {
+    font-family: 'Meiryo', 'Hiragino Kaku Gothic Pro', 'Noto Sans JP', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* 見出しのスタイル */
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+/* グラフ表示セクション */
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 80%;
+    height: auto;
+}
+
+/* テーブルコンテナ：横並び配置 */
+.table-container {
+    display: flex;
+    gap: 20px; /* テーブル間のスペース */
+    justify-content: center; /* 中央揃え */
+    flex-wrap: wrap; /* 必要に応じて折り返し */
+}
+
+/* 各テーブルのボックス */
+.table-box {
+    flex: 1 1 300px; /* 最小幅を300pxに設定 */
+    max-width: 400px;
+}
+
+/* テーブルスタイル */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* リンクのスタイル */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: underline;
+}

@@ -15,15 +15,20 @@
         {% else %}
             <p>グラフデータがありません。</p>
         {% endif %}
-        <ul>
+        <table>
             {% if stats %}
                 {% for key, value in stats.items %}
-                    <li>{{ key }}: {{ value }}</li>
+                    <tr>
+                        <td> {{ key }} </td> 
+                        <td> {{ value }} </td>
+                    </tr>
                 {% endfor %}
             {% else %}
-                <li>データがありません。</li>
+                <tr>
+                    <td>統計データがありません。</td>
+                </tr>
             {% endif %}
-        </ul>
+        </table>
     </div>
     <p><a href="{% url 'home' %}">Back to Home</a></p>
 </body>
