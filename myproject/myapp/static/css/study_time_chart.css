@@ -1,0 +1,87 @@
+/* ページ全体のスタイル */
+body {
+    font-family: 'Meiryo', 'Hiragino Kaku Gothic Pro', 'Noto Sans JP', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4; /* 背景色を調整 */
+    color: #333;
+}
+
+/* 見出しのスタイル */
+h1 {
+    color: #444;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+}
+
+h1::before,
+h1::after {
+    content: '';
+    display: inline-block;
+    width: 60px;
+    height: 2px;
+    background-color: #007bff;
+    margin: 0 10px;
+}
+
+/* グラフのスタイル */
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 80%; /* グラフの横幅を最大80%に */
+    height: auto; /* アスペクト比を維持 */
+    border: 1px solid #ddd;
+    border-radius: 10px; /* 角を丸くする */
+}
+
+/* テーブル全体のスタイル */
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    width: 90%; /* 幅を指定 */
+    max-width: 800px; /* 最大幅 */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* テーブルに影を付ける */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center; /* 中央揃え */
+}
+
+th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #555;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* 偶数行の背景色 */
+}
+
+tr:hover {
+    background-color: #e0f7fa; /* ホバー時の背景色 */
+}
+
+/* 戻るリンクのスタイル */
+a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px; /* ボタン風のデザイン */
+    transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: #0056b3; /* ホバー時の色 */
+}

@@ -12,7 +12,7 @@ import urllib, base64
 import numpy as np
 import pandas as pd
 import logging
-import io  # 追加
+import io  
 from .models import Studyrecord, MyTypingRecord, Sushida5000Record, Sushida10000Record
 
 # Create your views here.

@@ -63,14 +63,24 @@ tr:hover {
 }
 
 /* リンクのスタイル */
+/* 戻るリンクのスタイル */
 a {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-top: 20px;
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px 15px;
     text-decoration: none;
-    color: #007bff;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px; /* ボタン風のデザイン */
+    transition: background-color 0.3s;
 }
 
 a:hover {
-    text-decoration: underline;
+    background-color: #0056b3; /* ホバー時の色 */
 }
+

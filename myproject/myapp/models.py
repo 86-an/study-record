@@ -21,21 +21,23 @@ class Studyrecord(models.Model):
     
  #mytypingの記録
 class MyTypingRecord(models.Model):
-    date = models.DateField(verbose_name="日付")  # 日付
-    accuracy_rate = models.FloatField(verbose_name="正打率")  # 正打率
-    score = models.IntegerField(verbose_name="スコア")  # スコア
-    rank = models.CharField(max_length=10, blank=True, verbose_name="ランク")  # ランク
+    date = models.DateField(verbose_name="日付") 
+    accuracy_rate = models.FloatField(verbose_name="正打率")  
+    score = models.IntegerField(verbose_name="スコア")  
+    rank = models.CharField(max_length=10, blank=True, verbose_name="ランク")
 
 class Sushida5000Record(models.Model):
     date = models.DateField(verbose_name="日付")  # 日付
-    accuracy_rate = models.FloatField(verbose_name="正打率")  # 正打率
-    score = models.IntegerField(verbose_name="スコア")  # スコア
-    rank = models.CharField(max_length=10, blank=True, verbose_name="ランク")  # ランク
-    correct_key = models.IntegerField(default=0)
-    mistake_key = models.IntegerField(default=0)
+    accuracy_rate = models.FloatField(null=True, blank=True, verbose_name="正打率") 
+    score = models.IntegerField(null=True, blank=True, verbose_name="スコア")  
+    rank = models.CharField(max_length=10, blank=True, verbose_name="ランク")  
+    correct_key = models.IntegerField(default=0, verbose_name='正打キー')
+    mistake_key = models.IntegerField(default=0, verbose_name='ミスキー')
     
 class Sushida10000Record(models.Model):
     date = models.DateField(verbose_name="日付")  # 日付
-    accuracy_rate = models.FloatField(verbose_name="正打率")  # 正打率
-    score = models.IntegerField(verbose_name="スコア")  # スコア
-    rank = models.CharField(max_length=10, blank=True, verbose_name="ランク")  # ランク
+    accuracy_rate = models.FloatField(null=True, blank=True, verbose_name="正打率")  
+    score = models.IntegerField(null=True, blank=True, verbose_name="スコア")  
+    rank = models.CharField(max_length=10, blank=True, verbose_name="ランク")  
+    correct_key = models.IntegerField(default=0, verbose_name='正打キー')
+    mistake_key = models.IntegerField(default=0, verbose_name='ミスキー')

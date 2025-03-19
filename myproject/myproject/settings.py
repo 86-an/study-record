@@ -58,7 +58,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'myapp/static')
+    os.path.join(BASE_DIR, 'myapp', 'static')  # 修正済み: STATICFILES_DIRS の設定を確認
 ]
 
 TEMPLATES = [
