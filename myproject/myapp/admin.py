@@ -35,7 +35,6 @@ def determine_rank(score):
 class TypingRecordAdmin(ImportExportModelAdmin):
     resource_class = MyTypingRecordResource
     list_display = ('date', 'accuracy_rate', 'score', 'rank')
-
     def save_model(self, request, obj, form, change):
         # スコアに基づいてランクを設定
         if not obj.rank:
